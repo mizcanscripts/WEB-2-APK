@@ -35,3 +35,44 @@ After ~3 minutes:
 4. Install the APK on your Android device
 
 ## Project Structure
+
+```
+
+├── .github/workflows/build-apk.yml   # Auto-build pipeline
+├── app/
+│   ├── build.gradle                  # App module config
+│   └── src/main/
+│       ├── AndroidManifest.xml       # Permissions & app config
+│       ├── java/com/mzxhub/app/      # Native Android code
+│       ├── res/                      # Icons, themes, strings
+│       └── assets/                   # Your HTML/CSS/JS website
+├── build.gradle                      # Root Gradle config
+├── settings.gradle
+└── gradle.properties
+
+```
+
+## Customizing
+
+| What | Where |
+|---|---|
+| App name | `app/src/main/res/values/strings.xml` |
+| App icon | `app/src/main/res/mipmap-xxxhdpi/ic_launcher.png` (512×512 PNG) |
+| Permissions | `app/src/main/AndroidManifest.xml` |
+| Website content | `app/src/main/assets/index.html` |
+| Version | `app/build.gradle` (`versionCode` / `versionName`) |
+| Package name | `app/build.gradle` (`applicationId`) |
+
+## Disclaimer
+
+This is a **personal project**. It is provided "as is" without warranty of
+any kind. Use at your own risk.
+
+- Not affiliated with Google, Android, or any third-party service.
+- Not intended for distribution on the Google Play Store.
+- The keystore in this repo is a **throwaway test key** — do not use it
+  for any app you plan to publish or update long-term.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
