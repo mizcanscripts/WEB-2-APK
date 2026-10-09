@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AppForge — Web to APK Builder</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="glass nav">
+  <div class="brand">
+    <div class="brand-dot"></div>
+    <span>AppForge</span>
+  </div>
+  <nav>
+    <a href="#builder">Builder</a>
+    <a href="#protection">Protection</a>
+    <a href="terms.html">Terms</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero">
+  <h1>Build your <span class="grad">Android App</span><br/>from the web.</h1>
+  <p>Upload your ZIP, pick your permissions, enable protection — export a ready-to-build config.</p>
+</section>
+
+<section id="builder" class="builder-grid">
+
+  <!-- LEFT -->
+  <div class="glass panel">
+
+    <h2>App Details</h2>
+
+    <label>App Logo (512×512 recommended)</label>
+    <div class="drop" id="logoDrop">
+      <input type="file" id="logoInput" accept="image/*" hidden/>
+      <div class="logo-preview" id="logoPreview"><span>Click to upload</span></div>
+    </div>
+
+    <label>Source ZIP or HTML (optional)</label>
+    <div class="drop" id="zipDrop">
+      <input type="file" id="zipInput" accept=".zip,.html" hidden/>
+      <div class="zip-preview" id="zipPreview"><span>Drop ZIP / HTML here</span></div>
+    </div>
+
+    <label>App Name</label>
+    <input id="appName" type="text" placeholder="My Awesome App" maxlength="30"/>
+
+    <label>Package Name</label>
+    <div class="pkg-row">
+      <span class="pkg-prefix">com.</span>
+      <input id="pkgSuffix" type="text" placeholder="yourname.myapp"/>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Version Name</label>
+        <input id="verName" type="text" placeholder="1.0.0"/>
+      </div>
+      <div>
+        <label>Version Code</label>
+        <input id="verCode" type="number" placeholder="1" value="1"/>
+      </div>
+    </div>
+
+    <label>Website URL (WebView source)</label>
+    <input id="webUrl" type="url" placeholder="https://example.com"/>
+
+    <div class="row">
+      <div>
+        <label>Min SDK</label>
+        <select id="minSdk">
+          <option value="21">Android 5.0</option>
+          <option value="23">Android 6.0</option>
+          <option value="24" selected>Android 7.0</option>
+          <option value="26">Android 8.0</option>
+          <option value="29">Android 10</option>
+          <option value="33">Android 13</option>
+        </select>
+      </div>
+      <div>
+        <label>Target SDK</label>
+        <select id="targetSdk">
+          <option value="29">API 29</option>
+          <option value="30">API 30</option>
+          <option value="31">API 31</option>
+          <option value="33" selected>API 33</option>
+          <option value="34">API 34</option>
+        </select>
+      </div>
+    </div>
+
+    <h2>Permissions</h2>
+    <div class="perms" id="permContainer"></div>
+
+    <h2 id="protection">Protection & Security</h2>
+
+    <div class="toggle-list">
+      <label class="tgl">
+        <span>Dex2C Protection <small>Harder to decompile</small></span>
+        <input type="checkbox" data-prot="DEX2C"/>
+        <span class="track"><span class="thumb"></span></span>
+      </label>
+      <label class="tgl">
+        <span>String Protection <small>Hides strings from decompiled APK</small></span>
+        <input type="checkbox" data-prot="STRING"/>
+        <span class="track"><span class="thumb"></span></span>
+      </label>
+      <label class="tgl">
+        <span>Anti-Debug <small>Blocks debugger attach</small></span>
+        <input type="checkbox" data-prot="ANTIDEBUG"/>
+        <span class="track"><span class="thumb"></span></span>
+      </label>
+      <label class="tgl">
+        <span>Obfuscation <small>Renames classes / methods</small></span>
+        <input type="checkbox" data-prot="OBFUSCATE"/>
+        <span class="track"><span class="thumb"></span></span>
+      </label>
+      <label class="tgl">
+        <span>Signature Check <small>Detects repackaging</small></span>
+        <input type="checkbox" data-prot="SIGCHECK"/>
+        <span class="track"><span class="thumb"></span></span>
+      </label>
+      <label class="tgl">
+        <span>Offline Cache Pages <small>Works without internet</small></span>
+        <input type="checkbox" data-prot="OFFLINE" checked/>
+        <span class="track"><span class="thumb"></span></span>
+      </label>
+      <label class="tgl">
+        <span>Play Store AAB <small>Generate .aab config</small></span>
+        <input type="checkbox" data-prot="AAB" checked/>
+        <span class="track"><span class="thumb"></span></span>
+      </label>
+    </div>
+
+    <div class="buttons">
+      <button class="btn primary" id="generateBtn">⚡ Generate</button>
+      <button class="btn" id="downloadZip">⬇ Download ZIP</button>
+    </div>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="glass panel">
+
+    <h2>Live Preview</h2>
+
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-logo" id="prevLogo"></div>
+        <div class="phone-name" id="prevName">App Name</div>
+        <div class="phone-ver" id="prevVer">v1.0.0</div>
+        <div class="phone-pkg" id="prevPkg">com.example.myapp</div>
+        <div class="phone-dots"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+
+    <h3>Config Output</h3>
+    <pre id="output">Fill the form to generate config…</pre>
+
+    <h3>Selected Permissions</h3>
+    <ul id="permList" class="perm-list"></ul>
+
+    <h3>Protection</h3>
+    <ul id="protList" class="perm-list"></ul>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <a href="terms.html">Terms of Service</a>
+  <span>© 2026 AppForge</span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
