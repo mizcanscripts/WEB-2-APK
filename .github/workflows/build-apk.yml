@@ -26,7 +26,7 @@ jobs:
           java-version: 17
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v6
+        uses: android-actions/setup-android@v4
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew || true
@@ -40,6 +40,22 @@ jobs:
               -keyalg RSA -keysize 2048 -validity 10000 \
               -storepass android -keypass android \
               -dname "CN=AppForge, OU=Dev, O=AppForge, L=Manila, S=NCR, C=PH"
+          fi
+
+      - name: Apply config from build-config.json
+        run: |
+          if [ -f app/build-config.json ]; then
+            APP_NAME=$(jq -r '.appName' app/build-config.json)
+            PKG=$(jq -r '.packageName' app/build-config.json)
+            VER_NAME=$(jq -r '.versionName' app/build-config.json)
+            VER_CODE=$(jq -r '.versionCode' app/build-config.json)
+
+            sed -i "s/applicationId \".*\"/applicationId \"$PKG\"/" app/build.gradle
+            sed -i "s/versionName \".*\"/versionName \"$VER_NAME\"/" app/build.gradle
+            sed -i "s/versionCode .*/versionCode $VER_CODE/" app/build.gradle
+            sed -i "s/namespace '.*'/namespace '$PKG'/" app/build.gradle
+
+            echo "Applied: $APP_NAME ($PKG) v$VER_NAME"
           fi
 
       - name: Build Release APK
